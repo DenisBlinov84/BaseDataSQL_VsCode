@@ -1,5 +1,10 @@
 -- Задание 1. 
 
+LOAD DATA INFILE
+"D:\GeekBrains\Основное обучение\Базы данных и SQL\Семинары\5. SQL – оконные функции\ExportCSV (4).csv"
+INTO TABLE cars
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"';
 
 CREATE TABLE cars
 (
@@ -74,6 +79,7 @@ INSERT trains VALUES
 (120,'Palo Alto', '12:49:00'),
 (120,'San Jose', '13:30:00');
 
+-- 1 вариант
 CREATE OR REPLACE VIEW lead_time AS
 SELECT
 	train_id, station, station_time, 
@@ -89,4 +95,10 @@ SELECT
 FROM lead_time 
 WINDOW w AS (PARTITION BY train_id);
 
-
+-- 2 вариант
+SELECT 
+	train_id,  station, station_time,
+    timediff(LEAD(station_time) OVER(), station_time) AS "Next_station"
+FROM trains;
+	
+	
